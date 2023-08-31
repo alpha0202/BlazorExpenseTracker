@@ -1,4 +1,9 @@
 
+using BlazorExpenseTracker.Data;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+
 namespace BlazorExpenseTracker.API
 {
     public class Program
@@ -6,13 +11,18 @@ namespace BlazorExpenseTracker.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
+            var sqlCon = new SqlConfiguration("sqlConnection");
+            builder.Services.AddSingleton(sqlCon);
+           
+            var sqlConnectionConfiguration = builder.Configuration.GetConnectionString("sqlConnection");
+            builder.Services.AddSingleton<IDbConnection>((sp) => new SqlConnection(sqlConnectionConfiguration));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
 
             var app = builder.Build();
 

@@ -1,0 +1,34 @@
+﻿@page "/categories"
+@using BlazorExpenseTracker.Model;
+
+<h1>Categories</h1>
+
+@if(categories == null)
+{
+    <p><strong>Loading...</strong></p>
+}
+else
+{
+    <table class="table">
+        
+        <thead>
+            <tr><th>Name</th></tr>
+
+        </thead>
+        <tbody>
+            @foreach (var category in categories)
+            {
+                <tr><td>@category.Name</td></tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private IEnumerable<Category> categories = new List<Category>
+    {
+        new Category { Id= 1, Name="Shopping"},
+        new Category{  Id= 2, Name="Fuel"}
+    };
+}
