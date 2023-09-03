@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Radzen;
 
 namespace BlazorExpenseTracker.UI
 {
@@ -12,7 +13,8 @@ namespace BlazorExpenseTracker.UI
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            
+            builder.Services.AddRadzenComponents();
+
 
             var app = builder.Build();
 
