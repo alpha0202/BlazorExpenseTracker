@@ -5,21 +5,18 @@
 <EditForm Model="@category" OnValidSubmit="SaveCategory">
 
     <DataAnnotationsValidator/>
-    <ValidationSummary />
+   @*  <ValidationSummary /> *@
 
     <table class="table">
         <tr>
             <td>Name</td>
             <td><input  type="text" @bind="category.Name" /></td>
-
         </tr>
         <tr><td colspan="2"><ValidationMessage For="@(()=> category.Name)" /></td></tr>
         <tr>
             <td colspan="2" style="text-align:center">
                 <input type="submit" class="" value="Save" />
                 <input type="button" class="" value="Cancel" />
-
-
             </td>
         </tr>
 
