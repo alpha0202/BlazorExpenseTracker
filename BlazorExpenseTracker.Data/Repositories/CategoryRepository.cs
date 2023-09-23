@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlazorExpenseTracker.Data.Repositories
 {
-    internal class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
 
         private SqlConfiguration _connectionString;
@@ -21,15 +21,13 @@ namespace BlazorExpenseTracker.Data.Repositories
 
         protected SqlConnection dbConnection()
         {
-            return new SqlConnection(_connectionString.ConnectionString);
+            var dbConn = new SqlConnection(_connectionString.ConnectionString);
+            return dbConn;
         }
 
 
-        public Task<bool> DeleteCategory(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+      
+        //get all
         public async Task<IEnumerable<Category>> GetAllCategories()
         {
             var db = dbConnection();
@@ -40,23 +38,51 @@ namespace BlazorExpenseTracker.Data.Repositories
 
         }
 
+        //get by id
         public async Task<Category> GetCategoryDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"SELECT Id, Name from Categories 
+            var sql = @"SELECT Id, Name 
+                                from Categories 
                                 where Id = @Id";
 
-            return await db.QueryFirstAsync<Category>(sql,new { id });
+            return await db.QueryFirstOrDefaultAsync<Category>(sql,new { Id = id });
         }
 
-        public Task<bool> InsertCategory(Category category)
+        //insert
+        public async Task<bool> InsertCategory(Category category)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+            var sql = @"INSERT INTO Categories(Name)
+                         values(@Name)";
+
+            var result = await db.ExecuteAsync(sql, new { category.Name });
+
+            return result > 0 && result < 1;
         }
 
-        public Task<bool> UpdateCategory(Category category)
+        //update
+        public async Task<bool> UpdateCategory(Category category)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+            var sql = @"UPDATE Categories set Name = @Name
+                                            where Id = @Id";
+
+            var result = await db.ExecuteAsync(sql, new {category.Name, category.Id});
+
+            return result > 0 && result < 1;
+        }
+
+
+        //delete
+        public async Task<bool> DeleteCategory(int id)
+        {
+            var db = dbConnection();
+            var sql = @"DELETE Categories where Id = @Id";
+
+            var result = await db.ExecuteAsync( sql, new { Id = id });
+
+            return result > 0 && result < 1;
         }
     }
 }

@@ -1,3 +1,5 @@
+using BlazorExpenseTracker.UI.Interfaces;
+using BlazorExpenseTracker.UI.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Radzen;
@@ -11,10 +13,10 @@ namespace BlazorExpenseTracker.UI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorPages();
-            builder.Services.AddServerSideBlazor();
+            builder.Services.AddRazorPages();       //ver potenciales errores
+            builder.Services.AddServerSideBlazor().AddCircuitOptions(option => { option.DetailedErrors = true; }) ;
             builder.Services.AddRadzenComponents();
-
+            builder.Services.AddHttpClient<ICategoryService, CategoryService>(client => { client.BaseAddress = new Uri("https://localhost:7111"); });
 
             var app = builder.Build();
 
