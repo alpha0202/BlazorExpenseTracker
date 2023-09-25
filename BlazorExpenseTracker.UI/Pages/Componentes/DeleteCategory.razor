@@ -1,0 +1,120 @@
+﻿@page "/categorydelete/{Id:int}"
+@inject NavigationManager NavigationManager;
+@inject ICategoryService CategoryService;
+
+
+
+<h3>Delete Category</h3>
+<p style="color:darkred;text-align:center">Are you sure you want to delete this category?</p>
+
+
+@* <div class="container">
+    <div class="card">
+        <div class="card-body">
+            <EditForm Model="@category">
+
+                <DataAnnotationsValidator />
+                @*  <ValidationSummary /> *@
+
+               @*  <table class="table" style="max-width: 25rem; align-content:center">
+                    <tr>
+                        <td>Name</td>
+                        <td><input class="form-control" type="text" @bind="category.Name" /></td>
+                    </tr>
+                    <br/>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <button type="button" class="btn btn-warning" @onclick="Delete" >Yes</button>
+                            <button type="button" class="btn btn-secondary" @onclick="Cancel" >No</button>
+                        </td>
+                    </tr>
+
+                </table>
+ *@
+
+      @*       </EditForm>
+
+        </div>
+
+    </div>
+
+</div> *@
+
+<RadzenTemplateForm Data="category">
+    <RadzenRow Gap="2rem" Class="rz-p-0 rz-p-lg-4">
+        <RadzenColumn Size="3" SizeMD="4">
+            <RadzenStack>
+                <RadzenFieldset Text="Delete Category">
+                   <RadzenStack Gap="1rem">
+                       <RadzenRow AlignItems="AlignItems.Center">
+                           <RadzenColumn Size="3" SizeMD="4">
+                               <RadzenLabel Text="Name" />                        
+                           </RadzenColumn>
+                            <RadzenColumn Size="3" SizeXS="4" SizeMD="4">
+                                <RadzenTextBox Style="width:100%" Name="NameCate" @bind-Value="category.Name" Disabled="true" />
+                            </RadzenColumn>
+                       </RadzenRow>
+                   </RadzenStack>
+
+                </RadzenFieldset>
+            </RadzenStack>
+
+        </RadzenColumn>
+
+    </RadzenRow>
+        
+    <RadzenRow Gap="2rem" Class="rz-p-0 rz-p-lg-4">
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem">
+            <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Small" Icon="warning_amber" Text="Yes" Click="@(arg => Delete())" />
+            <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.Small" Icon="eject" Text="No" Click="@(arg => Cancel())" />
+        </RadzenStack>
+    </RadzenRow>
+</RadzenTemplateForm>
+
+
+
+
+
+
+
+
+
+
+
+@code {
+   
+    [Parameter]
+    public int Id { get; set; }
+
+
+    public Category category = new Category();
+
+    protected override async Task OnInitializedAsync()
+    {
+        category = await CategoryService.GetCategoryDetails(Id);
+    }
+
+    protected async Task Delete()
+    {
+        await CategoryService.DeleteCategory(Id);
+        NavigateToCategories();
+
+    }
+
+    protected void Cancel()
+    {
+        NavigateToCategories();
+    }
+
+    //metodo que hace la navegación, pero solo es para no repetir codigo, solo con el método.
+    public void NavigateToCategories()
+    {
+
+        NavigationManager.NavigateTo("/categories");
+
+    }
+
+
+
+
+}

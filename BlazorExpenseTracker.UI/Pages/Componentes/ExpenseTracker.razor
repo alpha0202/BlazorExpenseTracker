@@ -1,0 +1,27 @@
+﻿@page "/expensetracker"
+@using BlazorExpenseTracker.UI.Components
+<h3>Expense Tracker</h3>
+
+
+<TabControl>
+
+    <TabTitle>
+        Title
+    </TabTitle>
+
+    <ChildContent>
+        <TabPage Text="Expense">
+            <h3>Amounts will be negative here</h3>
+        </TabPage>
+        <TabPage Text="Income">
+            <h3>Amounts will be positive here</h3>
+        </TabPage>
+
+    </ChildContent>
+</TabControl>
+
+
+
+@code {
+
+}

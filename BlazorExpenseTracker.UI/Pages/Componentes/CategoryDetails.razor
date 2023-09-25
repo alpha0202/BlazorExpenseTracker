@@ -1,31 +1,46 @@
 ﻿@page "/categorydetails"
-@using BlazorExpenseTracker.UI.Interfaces;
+@page "/categorydetails/{Id:int}"
+@inject NavigationManager NavigationManager;
 @inject ICategoryService CategoryService;
 
-<h1>Category Details</h1>
+<div class="modal" tabindex="-1" style="display:block" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Category Details</h3>
 
-<EditForm Model="@category" OnValidSubmit="SaveCategory">
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@category" OnValidSubmit="SaveCategory">
 
-    <DataAnnotationsValidator/>
-   @*  <ValidationSummary /> *@
+                    <DataAnnotationsValidator />
+                    @*  <ValidationSummary /> *@
 
-    <table class="table">
-        <tr>
-            <td>Name</td>
-            <td><input  type="text" @bind="category.Name" /></td>
-        </tr>
-        <tr><td colspan="2"><ValidationMessage For="@(()=> category.Name)" /></td></tr>
-        <tr>
-            <td colspan="2" style="text-align:center">
-                <input type="submit" class="" value="Save" />
-                <input type="button" class="" value="Cancel" />
-            </td>
-        </tr>
+                    <table class="table">
+                        <tr>
+                            <td>Name</td>
+                            <td><input type="text" @bind="category.Name" /></td>
+                        </tr>
+                        <tr><td colspan="2"><ValidationMessage For="@(()=> category.Name)" /></td></tr>
+                        <tr>
+                            <td colspan="2" style="text-align:center">
+                                <input type="submit" class="btn btn-success" value="Save" />
+                                <input type="button" class="btn btn-sm" value="Cancel" @onclick="Cancel" />
+                            </td>
+                        </tr>
 
-    </table>
+                    </table>
 
 
-</EditForm>
+                </EditForm>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
 
 
 
@@ -33,9 +48,38 @@
 @code {
     Category category = new Category();
 
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            category = await CategoryService.GetCategoryDetails(Id);
+        }
+
+    }
+
+
     protected async Task SaveCategory()
     {
-       await CategoryService.SaveCategory(category);
+        await CategoryService.SaveCategory(category);
+        NavigateToCategories();
     }
+
+    protected void Cancel()
+    {
+        NavigateToCategories();
+    }
+
+
+    //metodo que hace la navegación, pero solo es para no repetir codigo, solo con el método.
+    public void NavigateToCategories()
+    {
+
+        NavigationManager.NavigateTo("/categories");
+
+    }
+
 
 }

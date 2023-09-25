@@ -1,6 +1,9 @@
 ﻿@page "/categories"
+@inject ICategoryService CategoryService;
+@inject NavigationManager NavigationManager
 
 <h1>Categories</h1>
+<div class="alert-warning">@Message</div>
 
 @if(categories == null)
 {
@@ -8,16 +11,37 @@
 }
 else
 {
-    <table class="table">
+
+    @* <table class="table">
+        <tbody>
+            <tr>
+                <td colspan="2"><a href="/categorydetails"><div class="text-info"></div>Add New</a></td>
+            </tr>
+        </tbody>
+
+    </table> *@
+
+    <div class="card text-bg-secondary mb-3" style="max-width: 12rem;">
+        <div class="card-body">
+            <h6><a href="/categorydetails">Add New</a></h6>
+        </div>
+    </div>
+
+
+    <table class="table" style="max-width: 30rem;">
         
         <thead>
-            <tr><th>Name</th></tr>
+            <tr><th scope="col">Name</th></tr>
 
         </thead>
         <tbody>
             @foreach (var category in categories)
             {
-                <tr><td>@category.Name</td></tr>
+                <tr>
+                    <td>@category.Name</td>
+                    <td><a href="/categorydetails/@category.Id"><i>Edit</i></a></td>
+                    <td><a href="/categorydelete/@category.Id"><i>Delete</i></a></td>
+                </tr>
             }
         </tbody>
     </table>
@@ -25,9 +49,21 @@ else
 
 
 @code {
-    private IEnumerable<Category> categories = new List<Category>
+    public IEnumerable<Category> categories { get; set; }
+    public string Message { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
     {
-        // new Category { Id= 1, Name="Shopping"},
-        // new Category{  Id= 2, Name="Fuel"}
-    };
+        try
+        {
+            categories = await CategoryService.GetAllCategories();
+            
+        }
+        catch (Exception ex)
+        {
+            Message = ex.Message;
+
+        }
+    }
 }

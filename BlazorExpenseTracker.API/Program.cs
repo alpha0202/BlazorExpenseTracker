@@ -36,6 +36,7 @@ namespace BlazorExpenseTracker.API
             builder.Services.AddSingleton<IDbConnection>((sp) => new SqlConnection(sqlConnectionConfiguration));
 
 
+
             //inyectando Category Repository
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
