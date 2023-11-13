@@ -1,0 +1,79 @@
+﻿@inject ICategoryService CategoryService
+
+
+
+<div class="card-body">
+    <EditForm Model="@expense">
+        <DataAnnotationsValidator/>
+        <table class="table" style="width:30%">
+            <tr>
+                <td>Amount:</td>
+                <td><InputNumber class="form-control" @bind-Value="@expense.Amount"></InputNumber>
+                <ValidationMessage For="@(()=> expense.Amount)"/>    
+                </td>
+
+            </tr>
+            <tr>
+                <td>Transaction Date:</td>
+                <td><InputDate class="form-control" @bind-Value="@expense.TrasactionDate"></InputDate>
+                <ValidationMessage For="@(() => expense.TrasactionDate)" />   
+                </td>
+            </tr>
+            <tr>
+                <td>Category:</td>
+                <td>
+                    <InputSelect class="form-select" @bind-Value="@expense.CategoryId">
+                        @foreach (var cate in categories)
+                        {
+                            <option value="@cate.Id">@cate.Name</option>
+                        }
+                    </InputSelect>
+                </td>
+            </tr>
+            <tr>
+                <td>Expense Type:</td>
+                <td>
+                    <InputSelect class="form-select" disabled="true" @bind-Value="@expense.ExpenseType">
+                        <option value="@(ExpenseType.Income)">Income</option>
+                        <option value="@(ExpenseType.Expense)">Expense</option>
+                    </InputSelect>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:right">
+                    <div class="row">
+                        <div class="col-sm-4">
+
+                            <input type="submit" class="btn btn-success" value="Save" />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="button" class="btn btn-secondary" value="Cancel" />
+
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </EditForm>
+
+</div>
+
+
+
+
+@code {
+    private Expense expense = new Expense();
+    private IEnumerable<Category> categories = new List<Category>();
+    [Parameter]
+    public ExpenseType ExpenseType { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await CategoryService.GetAllCategories();
+        expense.CategoryId = categories.FirstOrDefault().Id.ToString();
+        expense.ExpenseType = ExpenseType;
+    }
+}

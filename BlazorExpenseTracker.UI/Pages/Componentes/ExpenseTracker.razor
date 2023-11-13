@@ -6,16 +6,20 @@
 <TabControl>
 
     <TabTitle>
-        Title
+        <img src="images/@(context.ImgSource).png"/> @context.Text
     </TabTitle>
-
+   
     <ChildContent>
-        <TabPage Text="Expense">
-            <h3>Amounts will be negative here</h3>
-        </TabPage>
-        <TabPage Text="Income">
-            <h3>Amounts will be positive here</h3>
-        </TabPage>
+        <br />
+        <div class="card-body p-3" >
+            <TabPage Text="Expense" ImgSource="minus">
+                <ExpenseDetails ExpenseType="@Model.ExpenseType.Expense"></ExpenseDetails>
+            </TabPage>
+            <TabPage Text="Income" ImgSource="plus">
+                <ExpenseDetails ExpenseType="@Model.ExpenseType.Income"></ExpenseDetails>
+            </TabPage>
+
+        </div>
 
     </ChildContent>
 </TabControl>

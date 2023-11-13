@@ -13,21 +13,21 @@ namespace BlazorExpenseTracker.Data.Repositories
     public class CategoryRepository : ICategoryRepository
     {
 
-        private SqlConfiguration _connectionString;
+        //private SqlConfiguration _connectionString;
         private IDbConnection _dbConnection;
 
 
         public CategoryRepository(SqlConfiguration connectionString, IDbConnection dbConnection)
         {
-            _connectionString = connectionString;
+            //_connectionString = connectionString;
             _dbConnection = dbConnection;
         }
 
-        protected SqlConnection dbConnection()
-        {
-            var dbConn = new SqlConnection(_connectionString.ConnectionString);
-            return dbConn;
-        }
+        //protected SqlConnection dbConnection()
+        //{
+        //    var dbConn = new SqlConnection(_connectionString.ConnectionString);
+        //    return dbConn;
+        //}
 
 
       
