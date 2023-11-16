@@ -37,8 +37,9 @@ namespace BlazorExpenseTracker.API
 
 
 
-            //inyectando Category Repository
+            //inyectando  Repositories
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
 
             var app = builder.Build();
