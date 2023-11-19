@@ -1,4 +1,5 @@
 ﻿using BlazorExpenseTracker.Data.Repositories;
+using BlazorExpenseTracker.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,82 @@ namespace BlazorExpenseTracker.API.Controllers
         {
             _expenseRepository = expenseRepository;
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllExpenses()
+        {
+
+            return Ok(await _expenseRepository.GetAllExpenses());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetExpensesDetails(int id)
+        {
+            return Ok(await _expenseRepository.GetExpenseDetail(id));
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateExpense([FromBody] Expense expense)
+        {
+            if (expense == null)
+            {
+                return BadRequest();
+            }
+           
+            if(expense.Amount < 0)
+            {
+                ModelState.AddModelError("Name", "Amount shouldn't be empty");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            var created = await _expenseRepository.InsertExpenseDetails(expense);
+
+            return Created("created", created);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateExpense([FromBody] Expense expense)
+        {
+            if (expense == null)
+            {
+                return BadRequest();
+            }
+
+            if (expense.Amount < 0)
+            {
+                ModelState.AddModelError("Name", "Amount shouldn't be empty");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _expenseRepository.UpdateExpense(expense);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteExpense(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
+            await _expenseRepository.DeleteExpense(id);
+            return NoContent();
+        }
+
+
 
     }
 }

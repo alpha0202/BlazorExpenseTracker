@@ -17,6 +17,7 @@ namespace BlazorExpenseTracker.UI
             builder.Services.AddServerSideBlazor().AddCircuitOptions(option => { option.DetailedErrors = true; }) ;
             builder.Services.AddRadzenComponents();
             builder.Services.AddHttpClient<ICategoryService, CategoryService>(client => { client.BaseAddress = new Uri("https://localhost:7111"); });
+            builder.Services.AddHttpClient<IExpenseService, ExpenseService>(client => { client.BaseAddress = new Uri("https://localhost:7111"); });
 
             var app = builder.Build();
 

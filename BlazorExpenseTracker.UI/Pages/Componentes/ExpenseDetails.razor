@@ -1,9 +1,10 @@
 ﻿@inject ICategoryService CategoryService
+@inject IExpenseService ExpenseService
 
 
 
 <div class="card-body">
-    <EditForm Model="@expense">
+    <EditForm Model="@expense" OnValidSubmit="SaveExpense">
         <DataAnnotationsValidator/>
         <table class="table" style="width:30%">
             <tr>
@@ -76,4 +77,10 @@
         expense.CategoryId = categories.FirstOrDefault().Id.ToString();
         expense.ExpenseType = ExpenseType;
     }
+
+    protected async Task SaveExpense()
+    {
+        await ExpenseService.SaveExpense(expense);
+    }
+
 }
