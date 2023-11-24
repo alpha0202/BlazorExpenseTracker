@@ -61,7 +61,7 @@ namespace BlazorExpenseTracker.Data.Repositories
                 expense.Amount,
                 expense.CategoryId,
                 expense.ExpenseType,
-                expense.TrasactionDate
+                expense.TransactionDate
             });
 
             return result > 0;
@@ -73,7 +73,7 @@ namespace BlazorExpenseTracker.Data.Repositories
                                 SET Amount = @Amount,
                                     CategoryId = @CategoryId,
                                     ExpenseType = @ExpenseType,
-                                    ExpenseDate = @ExpenseDate
+                                    TransactionDate = @TransactionDate
                                 WHERE Id = @Id";
 
             var result = await _dbConnection.ExecuteAsync(sql, new
@@ -82,7 +82,7 @@ namespace BlazorExpenseTracker.Data.Repositories
                 expense.Amount,
                 expense.CategoryId,
                 expense.ExpenseType,
-                expense.TrasactionDate
+                expense.TransactionDate
             });
 
             return result > 0;

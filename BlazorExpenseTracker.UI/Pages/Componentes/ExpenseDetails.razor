@@ -16,15 +16,15 @@
             </tr>
             <tr>
                 <td>Transaction Date:</td>
-                <td><InputDate class="form-control" @bind-Value="@expense.TrasactionDate"></InputDate>
-                <ValidationMessage For="@(() => expense.TrasactionDate)" />   
+                <td><InputDate class="form-control" @bind-Value="@expense.TransactionDate"></InputDate>
+                <ValidationMessage For="@(() => expense.TransactionDate)" />   
                 </td>
             </tr>
             <tr>
                 <td>Category:</td>
                 <td>
-                    <InputSelect class="form-select" @bind-Value="@expense.CategoryId">
-                        @foreach (var cate in categories)
+                    <InputSelect class="form-select" @bind-Value="@expense.CategoryId" >
+                        @foreach (Category cate in categories)
                         {
                             <option value="@cate.Id">@cate.Name</option>
                         }
@@ -80,6 +80,7 @@
 
     protected async Task SaveExpense()
     {
+        
         await ExpenseService.SaveExpense(expense);
     }
 

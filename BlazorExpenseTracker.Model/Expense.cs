@@ -15,11 +15,11 @@ namespace BlazorExpenseTracker.Model
         [Range(1,double.MaxValue,ErrorMessage ="Amount needs to be greater than 0")]
         public decimal Amount { get; set; }
         [Required]
-        public string CategoryId { get; set; }
-        public Category Category { get; set; }
+        public string? CategoryId { get; set; }
+        public Category? Category { get; set; }
         [Required]
         [ExpenseTransactionDateValidator(DaysInTheFuture =30)]
-        public DateTime TrasactionDate { get; set; }
+        public DateTime TransactionDate { get; set; }
 
         public ExpenseType ExpenseType { get; set; }
         
