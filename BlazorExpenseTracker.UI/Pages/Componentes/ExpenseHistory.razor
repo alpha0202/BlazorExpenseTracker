@@ -1,0 +1,69 @@
+﻿@* @page "/expensehistory" *@
+
+
+@inject IExpenseService ExpenseServices
+
+<h1>History</h1>
+<p class="text-bg-danger">@Message</p>
+
+@if (expenses is null)
+
+{
+    <p><em><strong>Loading...</strong></em></p>
+}
+else
+{
+    <table class="table table-bordered table-light table-hover">
+        <thead>
+            <tr>
+                <td>Amount</td>
+                <td>Category</td>
+                <td>Date</td>
+                
+            
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var expense in expenses)
+            {
+                <tr>
+                    <td style="@GetTextColor(expense.Id)">@expense.Amount</td>
+                    <td>@expense.Category.Name</td>
+                    <td>@expense.TransactionDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    public IEnumerable<Expense> expenses { get; set; }
+    public string Message { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            expenses = await ExpenseServices.GetAllExpenses();
+        }
+        catch (Exception e)
+        {
+
+            Message = $"Something went wrong...{e.Message}";
+        }
+    }
+
+
+    protected string GetTextColor(int expenseId)
+    {
+        var exp = expenses.FirstOrDefault(e => e.Id == expenseId);
+
+        return exp.ExpenseType == ExpenseType.Income ? "color:green" : "color:red";
+    }
+
+
+
+
+}

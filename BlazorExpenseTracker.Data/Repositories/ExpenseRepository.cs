@@ -28,17 +28,22 @@ namespace BlazorExpenseTracker.Data.Repositories
 
         public async Task<IEnumerable<Expense>> GetAllExpenses()
         {
-            var sql = @"SELECT e.Id, Amount, CategoryId, ExpenseType, TransactionDate, 
-                               c.Id, c.Name
+            var sql = @"SELECT 
+                               e.Amount, 
+                               e.CategoryId, 
+                               e.ExpenseType, 
+                               e.TransactionDate, 
+                               c.Id, 
+                               c.Name
                         FROM Expenses e
                         INNER JOIN Categories c ON e.CategoryId = c.Id";
 
-            var result = await _dbConnection.QueryAsync<Expense, Category, Expense>(sql, ((expense, category) =>
+            var result = await _dbConnection.QueryAsync<Expense, Category, Expense>(sql, (expense, category) =>
             {
                 expense.Category = category;
                 return expense;
 
-            }), new { }, splitOn: "Id");
+            },splitOn: "Id");
 
             return result;
         }

@@ -38,8 +38,8 @@ namespace BlazorExpenseTracker.Data.Repositories
 
             var sql = @"SELECT Id, Name from Categories";
 
-            return await _dbConnection.QueryAsync<Category>(sql,new { });
-
+            var result =  await _dbConnection.QueryAsync<Category>(sql,new { });
+            return result;
         }
 
         //get by id
